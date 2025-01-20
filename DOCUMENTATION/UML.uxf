@@ -1,0 +1,54 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>344</x><y>196</y><w>104</w><h>144</h></coordinates><panel_attributes>_Utilisateur_
+--
+ID utilisateur
+Nom
+Prénom
+Email
+Mot de passe
+Photo de profil
+Date de naissance
+Description / bio
+Statut
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>56</x><y>188</y><w>104</w><h>144</h></coordinates><panel_attributes>_Jeu_
+--
+ID jeu
+Titre
+Description
+Date de sortie
+Développeur
+Éditeur
+Genre
+PEGI
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>192</x><y>52</y><w>104</w><h>96</h></coordinates><panel_attributes>_Avis_
+--
+ID critique
+Note (ex : sur 5 étoiles)
+Contenu
+Date de création
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>592</x><y>188</y><w>104</w><h>96</h></coordinates><panel_attributes>_ExpériencePro_
+--
+ID expérience
+Titre du poste
+Entreprise
+Durée (date début - fin)
+Description</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>568</x><y>388</y><w>168</w><h>96</h></coordinates><panel_attributes>_Projet_
+--
+ID projet
+Nom
+Description
+Date de création
+Statut (en cours, terminé, annulé)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>136</x><y>420</y><w>104</w><h>96</h></coordinates><panel_attributes>_Team_
+--
+ID équipe
+Nom
+Description
+Date de création</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>540</y><w>168</w><h>96</h></coordinates><panel_attributes>_Publication_
+--
+ID publication
+Contenu
+Date de publication
+Nombre de likes</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>512</x><y>44</y><w>104</w><h>72</h></coordinates><panel_attributes>_Commentaires_
+--
+ID commentaire
+Contenu
+Date de publication</panel_attributes><additional_attributes></additional_attributes></element></diagram>
