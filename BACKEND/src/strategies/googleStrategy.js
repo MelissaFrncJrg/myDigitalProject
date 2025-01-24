@@ -20,5 +20,3 @@ passport.use(
     }
   )
 );
-
-// Test unallow master accidental push
