@@ -1,39 +1,172 @@
-<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>432</x><y>144</y><w>117</w><h>36</h></coordinates><panel_attributes>_Utilisateur_
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>72</x><y>198</y><w>108</w><h>72</h></coordinates><panel_attributes>_Portfolio_
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>424</x><y>128</y><w>104</w><h>56</h></coordinates><panel_attributes>_Utilisateur_
 --
-ID portfolio
-ID créateur
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>333</y><w>189</w><h>108</h></coordinates><panel_attributes>_Projet_
+ID user</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>184</x><y>264</y><w>96</w><h>64</h></coordinates><panel_attributes>_Portfolio_
 --
-ID projet
+PK ID portfolio
+SK ID créateur
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>472</x><y>408</y><w>168</w><h>120</h></coordinates><panel_attributes>_Projet_
+--
+PK ID projet
+SK id avis
+SK id note_projet
 Nom
 Description
 Date de création
-Statut (en cours, terminé, annulé)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>162</x><y>351</y><w>117</w><h>63</h></coordinates><panel_attributes>_Team_
+Statut (en cours, terminé, annulé)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>96</x><y>448</y><w>104</w><h>40</h></coordinates><panel_attributes>_Team_
 --
 ID équipe
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>675</x><y>333</y><w>135</w><h>108</h></coordinates><panel_attributes>_News_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>672</x><y>584</y><w>120</w><h>88</h></coordinates><panel_attributes>_News_
 --
-ID news
+PK ID news
+SK id projet
 Contenu
 Date de publication
-Nombre de likes</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>693</x><y>81</y><w>117</w><h>81</h></coordinates><panel_attributes>_Avis_
+Nombre de likes</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>696</x><y>312</y><w>104</w><h>88</h></coordinates><panel_attributes>_note_projet_
 --
 ID avis
+ID user
 Contenu
-Date de publication</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>432</x><y>18</y><w>117</w><h>72</h></coordinates><panel_attributes>_Account_
+Note (enum 1 to 5)
+Date de publication</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>424</x><y>0</y><w>104</w><h>80</h></coordinates><panel_attributes>_Account_
 --
-ID utilisateur
+ID user
 ID account
 Statut
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>81</y><w>27</w><h>81</h></coordinates><panel_attributes>lt=&lt;.
-</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>333</x><y>225</y><w>117</w><h>36</h></coordinates><panel_attributes>_Créateur_
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>225</y><w>117</w><h>36</h></coordinates><panel_attributes>_Client_
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>504</y><w>117</w><h>63</h></coordinates><panel_attributes>_Recrutement_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>72</y><w>24</w><h>72</h></coordinates><panel_attributes>lt=&lt;.
+</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>368</x><y>224</y><w>104</w><h>64</h></coordinates><panel_attributes>_Créateur_
 --
-ID projet
-ID team
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>171</x><y>225</y><w>180</w><h>36</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>117</y><w>81</w><h>126</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;120;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>549</x><y>369</y><w>144</w><h>36</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>252</y><w>99</w><h>117</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;110;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>405</x><y>252</y><w>54</w><h>99</h></coordinates><panel_attributes></panel_attributes><additional_attributes>40;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>432</x><y>432</y><w>27</w><h>90</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>549</x><y>153</y><w>225</w><h>216</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;220;230;110;230;10</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>405</y><w>180</w><h>153</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;150;180;150</additional_attributes></element><element><id>Relation</id><coordinates><x>423</x><y>171</y><w>45</w><h>72</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;60;30;10</additional_attributes></element><element><id>Relation</id><coordinates><x>531</x><y>171</y><w>63</w><h>72</h></coordinates><panel_attributes></panel_attributes><additional_attributes>50;60;10;10</additional_attributes></element></diagram>
+ID user
+ID Créateur
+ID projet</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>264</x><y>424</y><w>104</w><h>64</h></coordinates><panel_attributes>_Recrutement_
+--
+PK recrutement 
+SK ID projet
+SK ID team
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>264</y><w>112</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>536</x><y>520</y><w>152</w><h>112</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;120;170;120</additional_attributes></element><element><id>Relation</id><coordinates><x>632</x><y>360</y><w>80</w><h>80</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;80;10;10;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>416</x><y>160</y><w>24</w><h>80</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>864</x><y>552</y><w>104</w><h>88</h></coordinates><panel_attributes>_Commentaire_
+--
+PK ID commentaire
+SK ID joueur
+Contenu
+Date de publication
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>392</x><y>328</y><w>144</w><h>40</h></coordinates><panel_attributes>_Recommendation_
+--
+calcul avis/note_projet</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>464</x><y>264</y><w>24</w><h>80</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>456</y><w>128</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>192</x><y>456</y><w>88</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>90;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>232</y><w>104</w><h>88</h></coordinates><panel_attributes>_note_créateur_
+--
+ID note_créa
+ID user
+Contenu
+Note (enum /5)
+Date de publication</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>464</x><y>248</y><w>112</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>888</x><y>184</y><w>24</w><h>384</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;460</additional_attributes></element><element><id>UMLClass</id><coordinates><x>824</x><y>136</y><w>104</w><h>56</h></coordinates><panel_attributes>_Joueur_
+--
+PK joueur
+SK ID user</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>248</x><y>112</y><w>104</w><h>88</h></coordinates><panel_attributes>_Admin_
+--
+PK ID admin
+SK ID user
+versioning
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1056</x><y>176</y><w>96</w><h>64</h></coordinates><panel_attributes>_Modérateur_
+--
+API profanity filter</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>136</y><w>320</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;380;20</additional_attributes></element><element><id>Relation</id><coordinates><x>488</x><y>360</y><w>24</w><h>64</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>784</x><y>608</y><w>96</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;100;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>704</x><y>456</y><w>104</w><h>88</h></coordinates><panel_attributes>_Avis_
+--
+PK ID avis
+SK ID joueur
+note enum (1 à 5)
+date de publication
+date de modification</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>632</x><y>472</y><w>88</w><h>32</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;90;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>352</x><y>856</y><w>104</w><h>56</h></coordinates><panel_attributes>_Utilisateur_
+--
+ID user</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>112</x><y>992</y><w>96</w><h>64</h></coordinates><panel_attributes>_Portfolio_
+--
+PK ID portfolio
+FK ID créateur
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>392</x><y>1136</y><w>168</w><h>120</h></coordinates><panel_attributes>_Projet_
+--
+PK ID projet
+FK id avis
+FK id note_projet
+Nom
+Description
+Date de création
+Statut (en cours, terminé, annulé)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>8</x><y>1176</y><w>104</w><h>56</h></coordinates><panel_attributes>_Team_
+--
+PK ID équipe
+FK ID projet
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>1312</y><w>120</w><h>88</h></coordinates><panel_attributes>_News_
+--
+PK ID news
+FK id projet
+Contenu
+Date de publication
+Nombre de likes</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>680</x><y>1040</y><w>104</w><h>88</h></coordinates><panel_attributes>_note_projet_
+--
+ID avis
+ID user
+Contenu
+Note (enum 1 to 5)
+Date de publication</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>352</x><y>728</y><w>104</w><h>80</h></coordinates><panel_attributes>_Account_
+--
+ID user
+ID account
+Statut
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>408</x><y>800</y><w>24</w><h>72</h></coordinates><panel_attributes>lt=&lt;.
+</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>296</x><y>984</y><w>104</w><h>64</h></coordinates><panel_attributes>_Créateur_
+--
+ID user
+ID Créateur
+ID projet</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>208</x><y>1168</y><w>104</w><h>56</h></coordinates><panel_attributes>_Recrutement_
+--
+PK-FK ID projet
+PK-FK ID team
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>1008</y><w>112</w><h>32</h></coordinates><panel_attributes>lt=-
+m1=1..1</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>456</x><y>1248</y><w>160</w><h>120</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;10;120;180;120</additional_attributes></element><element><id>Relation</id><coordinates><x>552</x><y>1088</y><w>144</w><h>88</h></coordinates><panel_attributes>lt=-
+m2=0..n
+m1=1..1</panel_attributes><additional_attributes>10;90;70;10;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>344</x><y>888</y><w>40</w><h>112</h></coordinates><panel_attributes>lt=-
+m2=1..1
+</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>832</x><y>1280</y><w>104</w><h>88</h></coordinates><panel_attributes>_Commentaire_
+--
+PK ID commentaire
+FK ID account
+Contenu
+Date de publication
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>392</x><y>1040</y><w>40</w><h>112</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>1192</y><w>104</w><h>32</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=n..1</panel_attributes><additional_attributes>110;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>104</x><y>1192</y><w>120</w><h>32</h></coordinates><panel_attributes>lt=-
+m2=1..1
+m1=0..n</panel_attributes><additional_attributes>130;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>528</x><y>944</y><w>104</w><h>88</h></coordinates><panel_attributes>_note_créateur_
+--
+ID note_créa
+ID user
+Contenu
+Note (enum /5)
+Date de publication</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>392</x><y>976</y><w>152</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=1..1
+</panel_attributes><additional_attributes>10;20;170;20</additional_attributes></element><element><id>Relation</id><coordinates><x>856</x><y>912</y><w>40</w><h>384</h></coordinates><panel_attributes>lt=-
+m1=0..1
+m2=0..n</panel_attributes><additional_attributes>10;10;10;460</additional_attributes></element><element><id>UMLClass</id><coordinates><x>792</x><y>864</y><w>104</w><h>56</h></coordinates><panel_attributes>_Joueur_
+--
+PK joueur
+FK ID user</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>160</x><y>728</y><w>104</w><h>88</h></coordinates><panel_attributes>_Admin_
+--
+PK ID admin
+FK ID user
+versioning
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>712</x><y>1344</y><w>136</w><h>32</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>672</x><y>1184</y><w>104</w><h>88</h></coordinates><panel_attributes>_Avis_
+--
+PK ID avis
+FK ID joueur
+note enum (1 à 5)
+date de publication
+date de modification</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>552</x><y>1208</y><w>136</w><h>32</h></coordinates><panel_attributes>lt=-
+m2=0..n
+m1=1..1</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>448</x><y>872</y><w>360</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=1..1
+</panel_attributes><additional_attributes>10;20;430;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>448</x><y>1064</y><w>112</w><h>40</h></coordinates><panel_attributes>_Recommendation_
+--
+calcul avis/note_projet</panel_attributes><additional_attributes></additional_attributes></element></diagram>
