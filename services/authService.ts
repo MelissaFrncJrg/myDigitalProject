@@ -1,12 +1,16 @@
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
+import { useNuxtApp } from '#app'
 import type { AxiosInstance } from 'axios'
 
 export const useAuthService = () => {
   // On injecte l'instance Axios avec un typage explicite
-  const api = inject<AxiosInstance>('$api')
-  if (!api) {
+  const { $api } = useNuxtApp()
+  if (!$api) {
     throw new Error("Axios instance not provided")
   }
+
+  // On force le typage (sinon TypeScript ne sait pas ce que c'est)
+  const api = $api as AxiosInstance
 
   const loading = ref(false)
   const error = ref<string | null>(null)
