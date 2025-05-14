@@ -1,8 +1,13 @@
-import { ref } from 'vue'
-
-const API_URL = '/auth'
+import { ref, inject } from 'vue'
+import type { AxiosInstance } from 'axios'
 
 export const useAuthService = () => {
+  // On injecte l'instance Axios avec un typage explicite
+  const api = inject<AxiosInstance>('$api')
+  if (!api) {
+    throw new Error("Axios instance not provided")
+  }
+
   const loading = ref(false)
   const error = ref<string | null>(null)
   const qrCodeUrl = ref<string | null>(null)
@@ -14,27 +19,21 @@ export const useAuthService = () => {
     error.value = null
 
     try {
-      const response = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, username }),
+      const response = await api.post('/auth/register', {
+        email,
+        password,
+        username,
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        error.value = errorData.message || 'Erreur lors de la création du compte.'
-        loading.value = false
-        return
-      }
-
-      const data = await response.json()
-      message.value = data.message
-      qrCodeUrl.value = data.qrCodeUrl
-      userId.value = data.userId
+      message.value = response.data.message
+      qrCodeUrl.value = response.data.qrCodeUrl
+      userId.value = response.data.userId
     } catch (err: any) {
-      error.value = 'Erreur serveur. Veuillez réessayer plus tard.'
+      if (err.response) {
+        error.value = err.response.data.message || 'Erreur lors de la création du compte.'
+      } else {
+        error.value = 'Erreur serveur. Veuillez réessayer plus tard.'
+      }
     } finally {
       loading.value = false
     }
