@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -6,11 +6,17 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
+    server: {
+      proxy: {
+        '/auth': {
+          target: 'http://localhost:4455',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/auth/, '/auth')
+        }
+      }
+    }
   },
-
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
