@@ -17,5 +17,11 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/ui'
-  ]
+  ],
+
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.VITE_BACKEND_URL || 'http://localhost:4455'
+    }
+  }
 })
