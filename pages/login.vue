@@ -21,12 +21,19 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthService } from '@/services/authService'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
+const router = useRouter()
 const { login, loading, error, isTotpEnabled } = useAuthService()
 
-const handleLogin = () => {
-  login(email.value, password.value)
+const handleLogin = async () => {
+  await login(email.value, password.value)
+
+  if (!isTotpEnabled.value) {
+    console.log("🚀 Redirection vers le dashboard")
+    router.push('/dashboard')
+  }
 }
 </script>

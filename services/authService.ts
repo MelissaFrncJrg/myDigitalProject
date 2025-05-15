@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
+import { useUserStore } from '~/stores/userStore'
 import type { AxiosInstance } from 'axios'
 
 export const useAuthService = () => {
@@ -24,6 +25,7 @@ export const useAuthService = () => {
   // 🌟 État spécifique à la connexion
   const user = ref<any | null>(null)
   const isTotpEnabled = ref(false)
+  const userStore = useUserStore()
 
   const register = async (email: string, password: string, username: string) => {
     loading.value = true
@@ -64,6 +66,7 @@ export const useAuthService = () => {
         isTotpEnabled.value = true
       } else {
         user.value = response.data.user
+        userStore.setUser(response.data.user)
         console.log('✅ Login réussi :', user.value)
       }
     } catch (err: any) {
