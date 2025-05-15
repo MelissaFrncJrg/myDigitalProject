@@ -31,7 +31,7 @@ const { login, loading, error, isTotpEnabled } = useAuthService()
 const handleLogin = async () => {
   await login(email.value, password.value)
 
-  if (!isTotpEnabled.value) {
+  if (!error.value && !isTotpEnabled.value) {
     console.log("🚀 Redirection vers le dashboard")
     router.push('/dashboard')
   }
