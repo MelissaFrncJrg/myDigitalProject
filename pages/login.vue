@@ -10,6 +10,10 @@
       </UButton>
     </form>
 
+    <div class="divider my-6">OU</div>
+
+    <OAuthButtons />
+
     <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
 
     <div v-if="isTotpEnabled" class="text-yellow-500 mt-4">
@@ -22,6 +26,7 @@
 import { ref } from 'vue'
 import { useAuthService } from '@/services/authService'
 import { useRouter } from 'vue-router'
+import OAuthButtons from '~/components/OAuthButtons.vue'
 
 const email = ref('')
 const password = ref('')
