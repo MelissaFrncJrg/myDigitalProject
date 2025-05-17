@@ -14,6 +14,11 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 
+// On active le middleware sur cette page
+definePageMeta({
+  middleware: 'auth'
+})
+
 const userStore = useUserStore()
 const user = userStore.getUser
 </script>
