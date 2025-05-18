@@ -122,10 +122,49 @@ export const useProfileService = () => {
     }
   }
 
+  // 🌟 Suppression de compte
+  const deleteAccount = async (password: string, totpToken?: string) => {
+    loading.value = true
+    error.value = null
+    success.value = null
+
+    try {
+      const token = userStore.getToken
+      if (!token) {
+        error.value = "Token d'authentification manquant."
+        return
+      }
+
+      const response = await api.delete('/profile/delete-account', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          password,
+          totpToken
+        }
+      })
+      
+      if (response.status === 200) {
+        success.value = response.data.message
+        userStore.clearUser()
+      }
+    } catch (err: any) {
+      if (err.response) {
+        error.value = err.response.data.message
+      } else {
+        error.value = 'Erreur serveur. Veuillez réessayer plus tard.'
+      }
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     fetchProfile,
     updateProfile,
     switchToCreator,
+    deleteAccount,
     loading,
     error,
     success,

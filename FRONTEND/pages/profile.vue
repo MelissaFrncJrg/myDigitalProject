@@ -71,6 +71,39 @@
       </div>
     </form>
 
+    <!-- 🌟 Bouton de suppression de compte -->
+    <UModal class="mt-6">
+      <UButton class="text-white" label="Supprimer mon compte" color="error"/>
+
+      <template #content>
+        <div class="p-4 space-y-4">
+          <p class="text-red-600">
+            ⚠️ Cette action est irréversible. Entrez votre mot de passe pour confirmer :
+          </p>
+
+          <UInput v-model="password" type="password" placeholder="Mot de passe" required />
+
+          <UInput 
+            v-if="userStore.getUser?.isTotpEnabled" 
+            v-model="totpToken" 
+            placeholder="Code 2FA (si activé)" 
+          />
+
+          <div class="flex justify-end gap-4 mt-4">
+            <UButton color="red" :disabled="loading" @click="handleDeleteAccount">
+              <template v-if="!loading">
+                Confirmer
+              </template>
+            </UButton>
+          </div>
+
+          <transition name="fade">
+            <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
+          </transition>
+        </div>
+      </template>
+    </UModal>
+
     <transition name="fade">
       <div v-if="success" class="text-green-500 mt-4">{{ success }}</div>
     </transition>
@@ -86,11 +119,13 @@ import { ref, computed } from 'vue'
 import { useProfileService } from '@/services/profileService'
 import { useUserStore } from '@/stores/userStore'
 
-const { updateProfile, switchToCreator, loading, error, success } = useProfileService()
+const { updateProfile, switchToCreator, deleteAccount, loading, error, success } = useProfileService()
 const userStore = useUserStore()
 
 // 🌟 Champs de formulaire
 const isEditing = ref(false)
+const password = ref('')
+const totpToken = ref('')
 const profile = computed(() => userStore.getProfile)
 const isCreator = computed(() => userStore.getUser?.role === 'CREATOR')
 const username = ref(profile.value?.username || '')
@@ -138,6 +173,15 @@ const cancelEdit = () => {
     twitter: '',
     github: '',
     website: ''
+  }
+}
+
+// 🔄 Méthode pour confirmer la suppression
+const handleDeleteAccount = async () => {
+  await deleteAccount(password.value, totpToken.value)
+  if (success.value) {
+    alert("Votre compte a été supprimé avec succès.")
+    window.location.href = "/" // Redirection vers l'accueil
   }
 }
 
