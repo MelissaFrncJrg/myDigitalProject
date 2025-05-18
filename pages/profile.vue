@@ -7,13 +7,8 @@
       </UButton>
     </div>
 
-    <!-- Loader si le profil est en cours de chargement -->
-    <div v-if="loading" class="text-center my-4">
-      <Loader />
-    </div>
-
     <!-- 🌟 Vue d'affichage (Lecture seule) -->
-    <div v-else-if="!isEditing" class="space-y-4">
+    <div v-if="!isEditing" class="space-y-4">
       <div class="flex items-center gap-4">
         <UAvatar
           size="3xl"
@@ -21,7 +16,10 @@
           alt="Avatar"
         />
         <div>
-          <h2 class="text-xl font-semibold">{{ username }}</h2>
+          <div class="flex items-center gap-2">
+            <h2 class="text-xl font-semibold">{{ username }}</h2>
+            <UBadge v-if="isCreator" label="Créateur" />
+          </div>
           <p class="text-gray-400">{{ bio }}</p>
         </div>
       </div>
@@ -33,6 +31,19 @@
           <li v-if="socialLinks.github">GitHub : <a :href="socialLinks.github" class="text-blue-500" target="_blank">{{ socialLinks.github }}</a></li>
           <li v-if="socialLinks.website">Site Web : <a :href="socialLinks.website" class="text-blue-500" target="_blank">{{ socialLinks.website }}</a></li>
         </ul>
+      </div>
+      
+      <!-- 🌟 Bouton de passage en Créateur -->
+      <div class="mt-6">
+        <UButton
+          class="bg-green-600 hover:bg-green-700 text-white"
+          :disabled="loading"
+          @click="confirmSwitchToCreator"
+        >
+          <template v-if="!loading">
+            Passer en mode Créateur
+          </template>
+        </UButton>
       </div>
     </div>
 
@@ -49,10 +60,7 @@
 
       <div class="flex gap-4">
         <UButton :disabled="loading" type="submit" class="w-full">
-          <template v-if="loading">
-            <Loader /> Mise à jour...
-          </template>
-          <template v-else>
+          <template v-if="!loading">
             Enregistrer les modifications
           </template>
         </UButton>
@@ -63,7 +71,6 @@
       </div>
     </form>
 
-    <!-- 🌟 Messages de succès ou d'erreur -->
     <transition name="fade">
       <div v-if="success" class="text-green-500 mt-4">{{ success }}</div>
     </transition>
@@ -79,12 +86,13 @@ import { ref, computed } from 'vue'
 import { useProfileService } from '@/services/profileService'
 import { useUserStore } from '@/stores/userStore'
 
-const { updateProfile, loading, error, success } = useProfileService()
+const { updateProfile, switchToCreator, loading, error, success } = useProfileService()
 const userStore = useUserStore()
 
 // 🌟 Champs de formulaire
 const isEditing = ref(false)
 const profile = computed(() => userStore.getProfile)
+const isCreator = computed(() => userStore.getUser?.role === 'CREATOR')
 const username = ref(profile.value?.username || '')
 const avatarUrl = ref(profile.value?.avatarUrl || '')
 const bio = ref(profile.value?.bio || '')
@@ -94,7 +102,13 @@ const socialLinks = ref(profile.value?.socialLinks || {
   website: ''
 })
 
-// 🔄 Lors de la soumission du formulaire
+// 🌟 Vérification si l'utilisateur est chargé
+onMounted(() => {
+  if (!userStore.getUser) {
+    userStore.loadUserFromStorage()
+  }
+})
+
 const handleUpdate = async () => {
   await updateProfile({
     username: username.value,
@@ -115,10 +129,8 @@ const handleUpdate = async () => {
   }
 }
 
-// 🔄 Annuler les modifications
 const cancelEdit = () => {
   isEditing.value = false
-  // On recharge les informations depuis le store
   username.value = profile.value?.username || ''
   avatarUrl.value = profile.value?.avatarUrl || ''
   bio.value = profile.value?.bio || ''
@@ -128,13 +140,15 @@ const cancelEdit = () => {
     website: ''
   }
 }
-</script>
 
-<style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s;
+const confirmSwitchToCreator = async () => {
+  if (confirm("Voulez-vous vraiment passer en mode Créateur ?")) {
+    await switchToCreator()
+    userStore.setUser({
+      ...userStore.getUser,
+      role: 'CREATOR'
+    })
+    console.log("Le rôle est passé à :", userStore.getUser.role)
+  }
 }
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-</style>
+</script>

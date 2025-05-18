@@ -95,9 +95,37 @@ export const useProfileService = () => {
     }
   }
 
+  // 🌟 Méthode pour switcher vers le rôle Creator
+  const switchToCreator = async () => {
+    loading.value = true
+    error.value = null
+    success.value = null
+
+    try {
+      const response = await api.patch('/profile/switch-to-creator')
+
+      if (response.data.success) {
+        success.value = response.data.message
+        userStore.setUser({
+          ...userStore.getUser,
+          role: 'CREATOR'
+        })
+      }
+    } catch (err: any) {
+      if (err.response) {
+        error.value = err.response.data.message
+      } else {
+        error.value = 'Erreur serveur. Veuillez réessayer plus tard.'
+      }
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     fetchProfile,
     updateProfile,
+    switchToCreator,
     loading,
     error,
     success,
