@@ -7,7 +7,10 @@
     <div class="flex items-center gap-4">
       <!-- Si l'utilisateur est connecté -->
       <div v-if="isAuthenticated">
-        <span>Bienvenue, {{ user.username }}</span>
+        <span>Bienvenue {{ profile?.username }}</span>
+        <NuxtLink to="/profile" class="text-white hover:text-gray-400 ml-4">
+          Mon Profil
+        </NuxtLink>
         <UButton size="sm" class="bg-red-600 hover:bg-red-700 text-white ml-4" @click="logout">
           Déconnexion
         </UButton>
@@ -23,15 +26,21 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
+import { useProfileService } from '@/services/profileService'
 
 const userStore = useUserStore()
+const { fetchProfile, profile } = useProfileService()
 
-// Accès aux données utilisateur
-const user = computed(() => userStore.getUser)
 const isAuthenticated = computed(() => userStore.isLoggedIn)
 
-// Fonction de déconnexion
+onMounted(async () => {
+  if (isAuthenticated.value) {
+    await fetchProfile()
+  }
+})
+
 const logout = () => {
   userStore.clearUser()
   window.location.href = "/"
