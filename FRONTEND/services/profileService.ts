@@ -16,7 +16,6 @@ export const useProfileService = () => {
   const error = ref<string | null>(null)
   const success = ref<string | null>(null)
 
-  // 🌟 On regroupe les informations dans un objet profil
   const profile = ref({
     username: '',
     avatarUrl: '',
@@ -28,7 +27,6 @@ export const useProfileService = () => {
     }
   })
 
-  // 🔎 Méthode pour récupérer le profil depuis l'API
   const fetchProfile = async () => {
     loading.value = true
     error.value = null
@@ -46,7 +44,6 @@ export const useProfileService = () => {
         },
       })
       
-      // 🌟 Mise à jour du profil
       profile.value = {
         username: response.data.profile.username,
         avatarUrl: response.data.profile.avatarUrl,
@@ -57,6 +54,8 @@ export const useProfileService = () => {
           website: ''
         }
       }
+
+      userStore.setProfile(profile.value)
     } catch (err: any) {
       if (err.response) {
         error.value = err.response.data.message
@@ -68,7 +67,6 @@ export const useProfileService = () => {
     }
   }
 
-  // 🔄 Méthode pour mettre à jour le profil
   const updateProfile = async (profileData: any) => {
     loading.value = true
     error.value = null
@@ -84,7 +82,7 @@ export const useProfileService = () => {
       
       if (response.data.success) {
         success.value = response.data.message
-        userStore.setUser(response.data.data) // Mise à jour du store
+        userStore.setUser(response.data.data)
       }
     } catch (err: any) {
       if (err.response) {

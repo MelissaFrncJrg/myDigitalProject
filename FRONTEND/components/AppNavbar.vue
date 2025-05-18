@@ -7,7 +7,9 @@
     <div class="flex items-center gap-4">
       <!-- Si l'utilisateur est connecté -->
       <div v-if="isAuthenticated">
-        <span>Bienvenue {{ profile?.username }}</span>
+        <span class="transition-opacity duration-300">
+          Bienvenue {{ profile?.username || '...' }}
+        </span>
         <NuxtLink to="/profile" class="text-white hover:text-gray-400 ml-4">
           Mon Profil
         </NuxtLink>
@@ -28,21 +30,21 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { useProfileService } from '@/services/profileService'
+import { navigateTo } from 'nuxt/app'
 
 const userStore = useUserStore()
-const { fetchProfile, profile } = useProfileService()
-
 const isAuthenticated = computed(() => userStore.isLoggedIn)
+const profile = computed(() => userStore.getProfile)
 
-onMounted(async () => {
-  if (isAuthenticated.value) {
-    await fetchProfile()
-  }
+// 🌟 Événement global pour détecter les mises à jour du profil
+onMounted(() => {
+  document.addEventListener('user:updated', () => {
+    console.log("🚀 Profil mis à jour depuis un autre composant.")
+  })
 })
 
 const logout = () => {
   userStore.clearUser()
-  window.location.href = "/"
+  navigateTo('/login')
 }
 </script>
