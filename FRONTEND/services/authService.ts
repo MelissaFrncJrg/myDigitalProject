@@ -66,6 +66,8 @@ export const useAuthService = () => {
         isTotpEnabled.value = true
       } else {
         user.value = response.data.user
+        // 🔄 On ajoute le token dans l'objet utilisateur avant de l'envoyer au store
+        user.value.token = response.data.token 
         userStore.setUser(response.data.user)
         console.log('✅ Login réussi :', user.value)
       }
