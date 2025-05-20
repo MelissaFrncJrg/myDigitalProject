@@ -55,7 +55,11 @@ export const useProfileService = () => {
         }
       }
 
-      userStore.setProfile(profile.value)
+      // ✅ Met à jour `user.profile` dans le store
+      userStore.setUser({
+        ...userStore.getUser,
+        profile: profile.value
+      })
     } catch (err: any) {
       if (err.response) {
         error.value = err.response.data.message

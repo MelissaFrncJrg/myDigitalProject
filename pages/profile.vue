@@ -154,12 +154,16 @@ const handleUpdate = async () => {
 
   // 🌟 Si le profil est mis à jour, on synchronise le store
   if (!error.value) {
-    userStore.setProfile({
-      username: username.value,
-      avatarUrl: avatarUrl.value,
-      bio: bio.value,
-      socialLinks: socialLinks.value,
-    })
+    const updatedUser = {
+      ...userStore.getUser,
+      profile: {
+        username: username.value,
+        avatarUrl: avatarUrl.value,
+        bio: bio.value,
+        socialLinks: socialLinks.value,
+      }
+    }
+    userStore.setUser(updatedUser)
     isEditing.value = false // ➡️ On repasse en mode lecture
   }
 }
