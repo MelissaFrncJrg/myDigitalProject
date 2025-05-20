@@ -62,9 +62,11 @@ export const useAuthService = () => {
       if (response.data.isTotpEnabled) {
         isTotpEnabled.value = true
       } else {
-        user.value = response.data.user
-        user.value.token = response.data.token 
-        userStore.setUser(response.data.user)
+        const userWithToken = {
+          ...response.data.user,
+          token: response.data.token
+        }
+        userStore.setUser(userWithToken)
         console.log('✅ Login réussi :', user.value)
         await fetchProfile()
       }
