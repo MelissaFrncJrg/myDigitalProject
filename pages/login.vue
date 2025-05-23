@@ -37,8 +37,8 @@ const handleLogin = async () => {
   await login(email.value, password.value)
 
   if (!error.value && !isTotpEnabled.value) {
-    console.log("🚀 Redirection vers le dashboard")
-    router.push('/dashboard')
+    console.log("🚀 Redirection vers la page d'accueil")
+    router.push('/')
   }
 }
 </script>
