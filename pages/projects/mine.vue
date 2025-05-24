@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Mes Projets</h1>
       <UModal v-model="isCreateModalOpen" title="Création d'un projet">
-        <UButton icon="i-lucide-plus" @click="isCreateModalOpen = true">Nouveau projet</UButton>
+        <UButton icon="i-heroicons-plus" @click="isCreateModalOpen = true">Nouveau projet</UButton>
 
         <template #body>
             <FormPopup @submitted="handleCreated" @close="isCreateModalOpen = false" />
@@ -22,7 +22,7 @@
 
         <div class="flex gap-2">
           <UModal v-model="isEditModalOpen" title="Modification d'un projet">
-            <UButton size="sm" icon="i-lucide-pencil" @click="editProject(project)">Modifier</UButton>
+            <UButton size="sm" icon="i-heroicons-pencil" @click="editProject(project)">Modifier</UButton>
 
             <template #body>
                 <FormPopup :initial-data="projectToEdit" :submit-label="'Mettre à jour'" @submitted="handleUpdated" @close="isEditModalOpen = false" />
@@ -30,7 +30,7 @@
           </UModal>
 
           <UModal v-model="isDeleteModalOpen" title="Supprimer ce projet ?">
-            <UButton size="sm" color="error" icon="i-lucide-trash" @click="confirmDelete(project)">Supprimer</UButton>
+            <UButton size="sm" color="error" icon="i-heroicons-trash" @click="confirmDelete(project)">Supprimer</UButton>
 
             <template #body>
               <div class="space-y-4">

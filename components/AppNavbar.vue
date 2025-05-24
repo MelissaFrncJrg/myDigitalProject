@@ -24,20 +24,20 @@
             </li>
             <li class="p-2">
               <NuxtLink to="/account" class="w-full">
-                <UButton variant="soft" icon="i-lucide-layout-dashboard" class="w-full">
+                <UButton variant="soft" icon="i-heroicons-squares-2x2" class="w-full">
                   Dashboard
                 </UButton>
               </NuxtLink>
             </li>
             <li v-if="role === 'CREATOR'" class="p-2">
               <NuxtLink to="/projects/mine" class="w-full">
-                <UButton variant="soft" icon="i-lucide-folder" class="w-full">
+                <UButton variant="soft" icon="i-heroicons-folder" class="w-full">
                   Mes projets
                 </UButton>
               </NuxtLink>
             </li>
             <li class="p-2">
-              <UButton variant="soft" color="error" icon="i-lucide-log-out" class="w-full" @click="logout">
+              <UButton variant="soft" color="error" icon="i-heroicons-arrow-right-on-rectangle" class="w-full" @click="logout">
                 Déconnexion
               </UButton>
             </li>

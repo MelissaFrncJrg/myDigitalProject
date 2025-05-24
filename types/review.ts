@@ -4,6 +4,7 @@ export interface Review {
   comment?: string
   likes?: any[]
   author?: {
+    id?: number
     profile?: {
       username?: string
     }
