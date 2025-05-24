@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-3xl mx-auto py-8 px-4">
-    <div v-if="project" class="space-y-6">
+    <div v-if="project" class="border border-gray-700 p-4 rounded space-y-6">
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold">{{ project.title }}</h1>
         <UBadge :label="statusLabel(project.status)" color="secondary" />
@@ -45,20 +45,7 @@
     <div v-if="userStore.isLoggedIn && project" class="mt-10">
       <h2 class="text-lg font-semibold text-white mb-2">Laisser un avis</h2>
 
-      <UForm :schema="reviewSchema" :state="reviewForm" class="space-y-4" @submit="onSubmit">
-        <UFormField label="Note (1 à 5)" name="rating">
-          <UInput v-model="reviewForm.rating" type="number" min="1" max="5" />
-        </UFormField>
-
-        <UFormField label="Commentaire" name="comment">
-          <UTextarea v-model="reviewForm.comment" placeholder="Partage ton avis..." />
-        </UFormField>
-
-        <UButton type="submit" color="primary">Envoyer</UButton>
-
-        <div v-if="reviewSuccess" class="text-green-500 mt-2">{{ reviewSuccess }}</div>
-        <div v-if="reviewError" class="text-red-500 mt-2">{{ reviewError }}</div>
-      </UForm>
+      <FormPopup :project-id="projectId" @submitted="fetchReviews" />
     </div>
 
     <div v-else-if="error" class="text-red-500">
@@ -70,17 +57,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import * as v from 'valibot'
-import type { FormSubmitEvent } from '@nuxt/ui'
 import { useProjectService } from '@/services/projectService'
 import { useUserStore } from '@/stores/userStore'
+import FormPopup from '~/components/reviews/FormPopup.vue'
 
 const route = useRoute()
 const projectId = Number(route.params.id)
 
-const { getProjectById, getReviewsByProjectId, createOrUpdateReview, loading, error } = useProjectService()
+const { getProjectById, getReviewsByProjectId, loading, error } = useProjectService()
 const userStore = useUserStore()
 
 interface Review {
@@ -97,39 +83,11 @@ interface Review {
 
 const project = ref<any>(null)
 const reviews = ref<Review[]>([])
-const reviewError = ref('')
-const reviewSuccess = ref('')
 const isFollowing = ref(false)
 
 const canFollow = computed(() => {
   return userStore.isLoggedIn && userStore.getUser?.id !== project.value?.creatorId
 })
-
-// 💡 Validation Schema (Valibot)
-const reviewSchema = v.object({
-  rating: v.pipe(v.number(), v.minValue(1, 'Min 1'), v.maxValue(5, 'Max 5')),
-  comment: v.pipe(v.string(), v.minLength(3, 'Le commentaire est trop court'))
-})
-
-type ReviewForm = v.InferOutput<typeof reviewSchema>
-
-const reviewForm = reactive<ReviewForm>({
-  rating: 5,
-  comment: ''
-})
-
-const onSubmit = async (event: FormSubmitEvent<ReviewForm>) => {
-  reviewError.value = ''
-  reviewSuccess.value = ''
-
-  try {
-    await createOrUpdateReview(projectId, event.data)
-    reviewSuccess.value = "Merci pour votre avis !"
-    await fetchReviews()
-  } catch (err: any) {
-    reviewError.value = err.message
-  }
-}
 
 const fetchReviews = async () => {
   const data = await getReviewsByProjectId(projectId)
