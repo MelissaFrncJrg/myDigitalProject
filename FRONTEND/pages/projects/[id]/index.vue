@@ -69,7 +69,17 @@
         </div>
 
         <p class="text-sm text-gray-300">{{ review.comment }}</p>
-        <div class="text-xs text-gray-500 mt-2">👍 {{ review.likes?.length || 0 }} j’aime</div>
+        <div class="flex items-center gap-2 text-xs text-gray-400 mt-2">
+          <UButton
+            variant="subtle"
+            size="sm"
+            icon="i-heroicons-hand-thumb-up"
+            :color="review.likes?.some(l => l.ID_user === userStore.getUser?.id) ? 'primary' : 'secondary'"
+            @click="toggleLike(review)"
+          >
+            {{ review.likes?.length || 0 }} j’aime
+          </UButton>
+        </div>
       </div>
     </div>
 
@@ -90,7 +100,7 @@ import type { Review } from '~/types/review'
 const route = useRoute()
 const projectId = Number(route.params.id)
 
-const { getProjectById, getReviewsByProjectId, deleteReview, loading, error } = useProjectService()
+const { getProjectById, getReviewsByProjectId, deleteReview, likeReview, unlikeReview, loading, error } = useProjectService()
 const userStore = useUserStore()
 
 const project = ref<any>(null)
@@ -150,6 +160,23 @@ const confirmDeleteReview = async (reviewId: number) => {
     } catch (err: any) {
       console.error('Erreur lors de la suppression :', err.message)
     }
+  }
+}
+
+const toggleLike = async (review: Review) => {
+  if (!userStore.isLoggedIn) return
+  const alreadyLiked = review.likes?.some(l => l.ID_user === userStore.getUser?.id)
+
+  try {
+    if (alreadyLiked) {
+      await unlikeReview(review.ID_review)
+      review.likes = review.likes?.filter(l => l.ID_user !== userStore.getUser?.id) || []
+    } else {
+      await likeReview(review.ID_review)
+      review.likes = [...(review.likes || []), { ID_user: userStore.getUser?.id }]
+    }
+  } catch (err: any) {
+    console.error(err.message)
   }
 }
 
