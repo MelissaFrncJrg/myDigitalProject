@@ -24,6 +24,10 @@ import { useProjectService } from '@/services/projectService'
 // Props
 const props = defineProps<{
   projectId: number
+  initialData?: {
+    rating: number
+    comment?: string
+  }
 }>()
 
 const emit = defineEmits<{
@@ -38,9 +42,17 @@ const schema = v.object({
 
 type FormSchema = v.InferOutput<typeof schema>
 const form = reactive<FormSchema>({
-  rating: 5,
-  comment: ''
+  rating: props.initialData?.rating ?? 5,
+  comment: props.initialData?.comment ?? ''
 })
+
+// 🔄 Met à jour le formulaire si initialData change
+watch(() => props.initialData, (newVal) => {
+  if (newVal) {
+    form.rating = newVal.rating
+    form.comment = newVal.comment || ''
+  }
+}, { deep: true, immediate: true })
 
 const success = ref('')
 const error = ref('')

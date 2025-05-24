@@ -28,24 +28,24 @@
 
     <div class="mt-10 space-y-4">
       <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold text-white">
-          Avis des utilisateurs
-          <span class="text-sm text-gray-400 font-normal">({{ reviews.length }})</span>
-        </h2>
+        <div class="flex items-center gap-1">
+          <h2 class="text-xl font-semibold text-white">Avis des utilisateurs</h2>
+          <UBadge :label="`${reviews.length}`" variant="soft" class="ml-2" />
+        </div>
 
-        <UModal v-if="userStore.isLoggedIn && project" v-model="isReviewModalOpen" title="Laisser un avis">
-          <UButton size="sm" icon="i-lucide-plus" @click="isReviewModalOpen = true">
-            Ajouter un avis
+        <UModal v-if="userStore.isLoggedIn && project" v-model="isReviewModalOpen" :title="myReview ? 'Modifier mon avis' : 'Laisser un avis'">
+          <UButton size="sm" :icon="myReview ? 'i-heroicons-pencil' : 'i-heroicons-plus'" @click="isReviewModalOpen = true">
+            {{ myReview ? 'Modifier mon avis' : 'Ajouter un avis' }}
           </UButton>
 
           <template #body>
-            <FormPopup :project-id="projectId" @submitted="handleReviewSubmitted" />
+            <FormPopup :project-id="projectId" :initial-data="myReview" @submitted="handleReviewSubmitted" @close="isReviewModalOpen = false"/>
           </template>
         </UModal>
       </div>
 
       <div v-if="reviews.length === 0" class="text-gray-400 text-sm">
-        Aucun commentaire n’a encore été laissé pour ce projet.
+        Aucun avis n’a encore été laissé pour ce projet.
       </div>
 
       <div
@@ -55,8 +55,19 @@
       >
         <div class="flex justify-between items-center mb-1">
           <span class="font-semibold">{{ review.author?.profile?.username || 'Utilisateur anonyme' }}</span>
-          <UBadge :label="`Note : ${review.rating}/5`" color="primary" />
+          
+          <div class="flex items-center gap-2">
+            <UBadge :label="`Note : ${review.rating}/5`" color="primary" />
+            <UButton
+              v-if="review.author?.id === userStore.getUser?.id"
+              icon="i-heroicons-trash"
+              color="error"
+              variant="ghost"
+              @click="confirmDeleteReview(review.ID_review)"
+            />
+          </div>
         </div>
+
         <p class="text-sm text-gray-300">{{ review.comment }}</p>
         <div class="text-xs text-gray-500 mt-2">👍 {{ review.likes?.length || 0 }} j’aime</div>
       </div>
@@ -74,24 +85,13 @@ import { useRoute } from 'vue-router'
 import { useProjectService } from '@/services/projectService'
 import { useUserStore } from '@/stores/userStore'
 import FormPopup from '~/components/reviews/FormPopup.vue'
+import type { Review } from '~/types/review'
 
 const route = useRoute()
 const projectId = Number(route.params.id)
 
-const { getProjectById, getReviewsByProjectId, loading, error } = useProjectService()
+const { getProjectById, getReviewsByProjectId, deleteReview, loading, error } = useProjectService()
 const userStore = useUserStore()
-
-interface Review {
-  ID_review: number
-  rating: number
-  comment?: string
-  likes?: any[]
-  author?: {
-    profile?: {
-      username?: string
-    }
-  }
-}
 
 const project = ref<any>(null)
 const reviews = ref<Review[]>([])
@@ -102,6 +102,10 @@ const handleReviewSubmitted = async () => {
   isReviewModalOpen.value = false
   await fetchReviews()
 }
+
+const myReview = computed(() => {
+  return reviews.value.find(r => r.author?.id === userStore.getUser?.id)
+})
 
 const canFollow = computed(() => {
   return userStore.isLoggedIn && userStore.getUser?.id !== project.value?.creatorId
@@ -135,6 +139,17 @@ const statusLabel = (status: string) => {
     case 'published': return 'Publié'
     case 'canceled': return 'Annulé'
     default: return 'Inconnu'
+  }
+}
+
+const confirmDeleteReview = async (reviewId: number) => {
+  if (confirm('Voulez-vous vraiment supprimer votre avis ?')) {
+    try {
+      await deleteReview(reviewId)
+      await fetchReviews()
+    } catch (err: any) {
+      console.error('Erreur lors de la suppression :', err.message)
+    }
   }
 }
 

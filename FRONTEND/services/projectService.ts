@@ -159,6 +159,18 @@ export const useProjectService = () => {
     }
   }
 
+  const deleteReview = async (reviewId: number) => {
+    try {
+      const token = userStore.getToken
+      const response = await api.delete(`/projects/reviews/${reviewId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      return response.data.message
+    } catch (err: any) {
+      throw new Error(err.response?.data?.message || 'Erreur lors de la suppression')
+    }
+  }
+
   return {
     createProject,
     updateProject,
@@ -168,6 +180,7 @@ export const useProjectService = () => {
     currentProject,
     getReviewsByProjectId,
     createOrUpdateReview,
+    deleteReview,
     loading,
     error,
     success
