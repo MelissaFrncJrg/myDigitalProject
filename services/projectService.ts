@@ -171,6 +171,30 @@ export const useProjectService = () => {
     }
   }
 
+  const likeReview = async (reviewId: number) => {
+    try {
+      const token = userStore.getToken
+      const res = await api.post(`/projects/reviews/${reviewId}/like`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      return res.data
+    } catch (err: any) {
+      throw new Error(err.response?.data?.message || "Erreur lors du like")
+    }
+  }
+
+  const unlikeReview = async (reviewId: number) => {
+    try {
+      const token = userStore.getToken
+      const res = await api.delete(`/projects/reviews/${reviewId}/like`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      return res.data
+    } catch (err: any) {
+      throw new Error(err.response?.data?.message || "Erreur lors du unlike")
+    }
+  }
+
   return {
     createProject,
     updateProject,
@@ -181,6 +205,8 @@ export const useProjectService = () => {
     getReviewsByProjectId,
     createOrUpdateReview,
     deleteReview,
+    likeReview,
+    unlikeReview,
     loading,
     error,
     success
