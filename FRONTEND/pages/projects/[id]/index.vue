@@ -26,8 +26,28 @@
       />
     </div>
 
-    <div v-if="reviews.length" class="mt-10 space-y-4">
-      <h2 class="text-xl font-semibold text-white">Avis des utilisateurs</h2>
+    <div class="mt-10 space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-white">
+          Avis des utilisateurs
+          <span class="text-sm text-gray-400 font-normal">({{ reviews.length }})</span>
+        </h2>
+
+        <UModal v-if="userStore.isLoggedIn && project" v-model="isReviewModalOpen" title="Laisser un avis">
+          <UButton size="sm" icon="i-lucide-plus" @click="isReviewModalOpen = true">
+            Ajouter un avis
+          </UButton>
+
+          <template #body>
+            <FormPopup :project-id="projectId" @submitted="handleReviewSubmitted" />
+          </template>
+        </UModal>
+      </div>
+
+      <div v-if="reviews.length === 0" class="text-gray-400 text-sm">
+        Aucun commentaire n’a encore été laissé pour ce projet.
+      </div>
+
       <div
         v-for="review in reviews"
         :key="review.ID_review"
@@ -42,17 +62,9 @@
       </div>
     </div>
 
-    <div v-if="userStore.isLoggedIn && project" class="mt-10">
-      <h2 class="text-lg font-semibold text-white mb-2">Laisser un avis</h2>
-
-      <FormPopup :project-id="projectId" @submitted="fetchReviews" />
-    </div>
-
-    <div v-else-if="error" class="text-red-500">
+    <div v-if="error" class="text-red-500">
       {{ error }}
     </div>
-
-    <div v-else class="text-gray-400">Chargement du projet...</div>
   </div>
 </template>
 
@@ -84,6 +96,12 @@ interface Review {
 const project = ref<any>(null)
 const reviews = ref<Review[]>([])
 const isFollowing = ref(false)
+const isReviewModalOpen = ref(false)
+
+const handleReviewSubmitted = async () => {
+  isReviewModalOpen.value = false
+  await fetchReviews()
+}
 
 const canFollow = computed(() => {
   return userStore.isLoggedIn && userStore.getUser?.id !== project.value?.creatorId
@@ -114,8 +132,8 @@ const formatDate = (date: string) => {
 const statusLabel = (status: string) => {
   switch (status) {
     case 'in_progress': return 'En cours'
-    case 'completed': return 'Terminé'
-    case 'on_hold': return 'En pause'
+    case 'published': return 'Publié'
+    case 'canceled': return 'Annulé'
     default: return 'Inconnu'
   }
 }
