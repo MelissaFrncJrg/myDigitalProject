@@ -137,6 +137,28 @@ export const useProjectService = () => {
     }
   }
 
+  const getReviewsByProjectId = async (projectId: number) => {
+    try {
+      const response = await api.get(`/projects/${projectId}/reviews`)
+      return response.data.reviews
+    } catch (err: any) {
+      console.error("Erreur lors de la récupération des avis", err)
+      return []
+    }
+  }
+
+  const createOrUpdateReview = async (projectId: number, data: { rating: number, comment: string }) => {
+    try {
+      const token = userStore.getToken
+      const response = await api.post(`/projects/${projectId}/review`, data, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      return response.data.review
+    } catch (err: any) {
+      throw new Error(err.response?.data?.message || 'Erreur lors de l’envoi de l’avis')
+    }
+  }
+
   return {
     createProject,
     updateProject,
@@ -144,6 +166,8 @@ export const useProjectService = () => {
     getProjectById,
     getMyProjects,
     currentProject,
+    getReviewsByProjectId,
+    createOrUpdateReview,
     loading,
     error,
     success
