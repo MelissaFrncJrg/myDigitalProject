@@ -106,8 +106,10 @@ export const useProjectService = () => {
         }
       })
 
-      currentProject.value = response.data.project
-      return response.data.project
+      const { project, isFollowedByCurrentUser } = response.data
+      
+      currentProject.value = project
+      return { project, isFollowedByCurrentUser }
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Erreur lors du chargement du projet'
       return null
@@ -195,6 +197,20 @@ export const useProjectService = () => {
     }
   }
 
+  const followProject = async (projectId: number) => {
+    const token = userStore.getToken
+    await api.post(`/projects/${projectId}/follow`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  }
+
+  const unfollowProject = async (projectId: number) => {
+    const token = userStore.getToken
+    await api.delete(`/projects/${projectId}/follow`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  }
+
   return {
     createProject,
     updateProject,
@@ -207,6 +223,8 @@ export const useProjectService = () => {
     deleteReview,
     likeReview,
     unlikeReview,
+    followProject,
+    unfollowProject,
     loading,
     error,
     success

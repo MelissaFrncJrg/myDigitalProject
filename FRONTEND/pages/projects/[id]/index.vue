@@ -69,7 +69,7 @@
         </div>
 
         <p class="text-sm text-gray-300">{{ review.comment }}</p>
-        <div class="flex items-center gap-2 text-xs text-gray-400 mt-2">
+        <div v-if="canLike" class="flex items-center gap-2 text-xs text-gray-400 mt-2">
           <UButton
             variant="subtle"
             size="sm"
@@ -100,7 +100,7 @@ import type { Review } from '~/types/review'
 const route = useRoute()
 const projectId = Number(route.params.id)
 
-const { getProjectById, getReviewsByProjectId, deleteReview, likeReview, unlikeReview, loading, error } = useProjectService()
+const { getProjectById, getReviewsByProjectId, deleteReview, likeReview, unlikeReview, followProject, unfollowProject, loading, error } = useProjectService()
 const userStore = useUserStore()
 
 const project = ref<any>(null)
@@ -121,6 +121,10 @@ const canFollow = computed(() => {
   return userStore.isLoggedIn && userStore.getUser?.id !== project.value?.creatorId
 })
 
+const canLike = computed(() => {
+  return userStore.isLoggedIn && userStore.getUser?.id !== project.value?.creatorId
+})
+
 const fetchReviews = async () => {
   const data = await getReviewsByProjectId(projectId)
   reviews.value = data
@@ -128,9 +132,10 @@ const fetchReviews = async () => {
 }
 
 onMounted(async () => {
-  const fetched = await getProjectById(projectId)
-  if (fetched) {
-    project.value = fetched
+  const result = await getProjectById(projectId)
+  if (result) {
+    project.value = result.project
+    isFollowing.value = result.isFollowedByCurrentUser
     await fetchReviews()
   }
 })
@@ -181,6 +186,15 @@ const toggleLike = async (review: Review) => {
 }
 
 const toggleFollow = async () => {
-  isFollowing.value = !isFollowing.value
+  try {
+    if (isFollowing.value) {
+      await unfollowProject(projectId)
+    } else {
+      await followProject(projectId)
+    }
+    isFollowing.value = !isFollowing.value
+  } catch (err: any) {
+    console.error(err.message)
+  }
 }
 </script>
