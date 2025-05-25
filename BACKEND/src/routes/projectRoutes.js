@@ -6,7 +6,9 @@ const {
   createProject,
   updateProject,
   getMyProjects,
+  getAllCreatorProjects,
   getProjectsByProfileId,
+  getProjectById,
   deleteProject,
   followProject,
   unfollowProject,
@@ -20,6 +22,8 @@ const {
   unlikeReview,
   getReviewLikesCount,
 } = require("../controllers/projectReviewController");
+
+router.get("/creators", getAllCreatorProjects)
 
 router.get("/:id/reviews", getProjectReviews);
 
@@ -57,5 +61,7 @@ router.delete("/reviews/:id", ensureAuthenticated, deleteReview);
 router.post("/reviews/:id/like", ensureAuthenticated, likeReview);
 
 router.delete("/reviews/:id/like", ensureAuthenticated, unlikeReview);
+
+router.get("/:id", getProjectById);
 
 module.exports = router;
