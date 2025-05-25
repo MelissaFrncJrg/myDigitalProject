@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useUserStore } from "~/stores/userStore";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
@@ -11,6 +12,16 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
   });
 
-  // Injection globale
+  api.interceptors.request.use((reqConfig) => {
+    const userStore = useUserStore();
+
+    const token = userStore.getToken;
+    if (token) {
+      reqConfig.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return reqConfig;
+  });
+
   nuxtApp.provide("api", api);
 });
