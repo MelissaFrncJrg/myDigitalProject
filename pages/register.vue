@@ -5,9 +5,14 @@
     <form class="space-y-4" @submit.prevent="handleRegister">
       <UInput v-model="email" placeholder="Email" required />
       <UInput v-model="username" placeholder="Nom d'utilisateur" required />
-      <UInput v-model="password" placeholder="Mot de passe" type="password" required />
+      <UInput
+        v-model="password"
+        placeholder="Mot de passe"
+        type="password"
+        required
+      />
       <UButton :disabled="loading" type="submit" class="w-full">
-        {{ loading ? 'Création en cours...' : 'Créer un compte' }}
+        {{ loading ? "Création en cours..." : "Créer un compte" }}
       </UButton>
     </form>
 
@@ -17,22 +22,22 @@
 
     <div v-if="qrCodeUrl" class="mt-6">
       <h2 class="text-lg font-semibold">QR Code pour 2FA :</h2>
-      <img :src="qrCodeUrl" alt="QR Code" class="mt-2">
+      <img :src="qrCodeUrl" alt="QR Code" class="mt-2" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAuthService } from '@/services/authService'
+import { ref } from "vue";
+import { useAuthService } from "@/services/authService";
 
-const email = ref('')
-const username = ref('')
-const password = ref('')
+const email = ref("");
+const username = ref("");
+const password = ref("");
 
-const { register, loading, error, qrCodeUrl, message } = useAuthService()
+const { register, loading, error, qrCodeUrl, message } = useAuthService();
 
 const handleRegister = () => {
-  register(email.value, password.value, username.value)
-}
+  register(email.value, password.value, username.value);
+};
 </script>

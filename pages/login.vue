@@ -4,9 +4,14 @@
 
     <form class="space-y-4" @submit.prevent="handleLogin">
       <UInput v-model="email" placeholder="Email" required />
-      <UInput v-model="password" placeholder="Mot de passe" type="password" required />
+      <UInput
+        v-model="password"
+        placeholder="Mot de passe"
+        type="password"
+        required
+      />
       <UButton :disabled="loading" type="submit" class="w-full">
-        {{ loading ? 'Connexion en cours...' : 'Se connecter' }}
+        {{ loading ? "Connexion en cours..." : "Se connecter" }}
       </UButton>
     </form>
 
@@ -23,22 +28,22 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAuthService } from '@/services/authService'
-import { useRouter } from 'vue-router'
-import OAuthButtons from '~/components/OAuthButtons.vue'
+import { ref } from "vue";
+import { useAuthService } from "@/services/authService";
+import { useRouter } from "vue-router";
+import OAuthButtons from "~/components/OAuthButtons.vue";
 
-const email = ref('')
-const password = ref('')
-const router = useRouter()
-const { login, loading, error, isTotpEnabled } = useAuthService()
+const email = ref("");
+const password = ref("");
+const router = useRouter();
+const { login, loading, error, isTotpEnabled } = useAuthService();
 
 const handleLogin = async () => {
-  await login(email.value, password.value)
+  await login(email.value, password.value);
 
   if (!error.value && !isTotpEnabled.value) {
-    console.log("🚀 Redirection vers la page d'accueil")
-    router.push('/')
+    console.log("🚀 Redirection vers la page d'accueil");
+    router.push("/");
   }
-}
+};
 </script>
