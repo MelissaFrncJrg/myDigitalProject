@@ -5,7 +5,6 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const api = axios.create({
     baseURL: config.public.apiBase,
-    withCredentials: true,
     headers: {
       "Content-Type": "application/json",
     },
