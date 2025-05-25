@@ -16,58 +16,62 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import * as v from 'valibot'
-import type { FormSubmitEvent } from '@nuxt/ui'
-import { useProjectService } from '@/services/projectService'
+import { reactive, ref } from "vue";
+import * as v from "valibot";
+import type { FormSubmitEvent } from "@nuxt/ui";
+import { useProjectService } from "@/services/projectService";
 
 // Props
 const props = defineProps<{
-  projectId: number
+  projectId: number;
   initialData?: {
-    rating: number
-    comment?: string
-  }
-}>()
+    rating: number;
+    comment?: string;
+  };
+}>();
 
 const emit = defineEmits<{
-  (e: 'submitted'): void
-}>()
+  (e: "submitted"): void;
+}>();
 
 // 🧩 Validation avec valibot
 const schema = v.object({
-  rating: v.pipe(v.number(), v.minValue(1, 'Min 1'), v.maxValue(5, 'Max 5')),
-  comment: v.pipe(v.string(), v.minLength(3, 'Le commentaire est trop court'))
-})
+  rating: v.pipe(v.number(), v.minValue(1, "Min 1"), v.maxValue(5, "Max 5")),
+  comment: v.pipe(v.string(), v.minLength(3, "Le commentaire est trop court")),
+});
 
-type FormSchema = v.InferOutput<typeof schema>
+type FormSchema = v.InferOutput<typeof schema>;
 const form = reactive<FormSchema>({
   rating: props.initialData?.rating ?? 5,
-  comment: props.initialData?.comment ?? ''
-})
+  comment: props.initialData?.comment ?? "",
+});
 
 // 🔄 Met à jour le formulaire si initialData change
-watch(() => props.initialData, (newVal) => {
-  if (newVal) {
-    form.rating = newVal.rating
-    form.comment = newVal.comment || ''
-  }
-}, { deep: true, immediate: true })
+watch(
+  () => props.initialData,
+  (newVal) => {
+    if (newVal) {
+      form.rating = newVal.rating;
+      form.comment = newVal.comment || "";
+    }
+  },
+  { deep: true, immediate: true }
+);
 
-const success = ref('')
-const error = ref('')
-const { createOrUpdateReview, loading } = useProjectService()
+const success = ref("");
+const error = ref("");
+const { createOrUpdateReview, loading } = useProjectService();
 
 // 🎯 Submit
 const onSubmit = async (event: FormSubmitEvent<FormSchema>) => {
-  success.value = ''
-  error.value = ''
+  success.value = "";
+  error.value = "";
   try {
-    await createOrUpdateReview(props.projectId, event.data)
-    success.value = 'Merci pour votre avis !'
-    emit('submitted')
+    await createOrUpdateReview(props.projectId, event.data);
+    success.value = "Merci pour votre avis !";
+    emit("submitted");
   } catch (err: any) {
-    error.value = err.message || 'Erreur lors de l’envoi'
+    error.value = err.message || "Erreur lors de l’envoi";
   }
-}
+};
 </script>

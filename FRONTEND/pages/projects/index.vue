@@ -16,7 +16,12 @@
         class="bg-gray-800 text-white rounded-lg p-4 shadow"
       >
         <div class="flex items-center gap-3 mb-2">
-          <UAvatar :src="project.creatorProfile?.avatarUrl || 'https://github.com/benjamincanac.png'" />
+          <UAvatar
+            :src="
+              project.creatorProfile?.avatarUrl ||
+              'https://github.com/benjamincanac.png'
+            "
+          />
           <NuxtLink
             class="text-blue-400 hover:underline"
             :to="`/profiles/${project.creatorProfile?.id}`"
@@ -26,13 +31,12 @@
         </div>
 
         <h2 class="text-xl font-semibold mb-1">{{ project.title }}</h2>
-        <p class="text-sm text-gray-400 mb-2">{{ formatStatus(project.status) }}</p>
+        <p class="text-sm text-gray-400 mb-2">
+          {{ formatStatus(project.status) }}
+        </p>
         <p>{{ project.description }}</p>
 
-        <NuxtLink
-          :to="`/projects/${project.id}`"
-          class="inline-block mt-3"
-        >
+        <NuxtLink :to="`/projects/${project.id}`" class="inline-block mt-3">
           <UButton label="Voir le projet" />
         </NuxtLink>
       </div>
@@ -41,31 +45,35 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useNuxtApp } from '#app'
+import { ref, onMounted } from "vue";
+import { useNuxtApp } from "#app";
 
-const { $api } = useNuxtApp()
-const projects = ref([])
-const loading = ref(true)
-const error = ref('')
+const { $api } = useNuxtApp();
+const projects = ref([]);
+const loading = ref(true);
+const error = ref("");
 
 const formatStatus = (status) => {
   switch (status) {
-    case 'in_progress': return 'En cours'
-    case 'published': return 'Publié'
-    case 'canceled': return 'Annulé'
-    default: return status
+    case "in_progress":
+      return "En cours";
+    case "published":
+      return "Publié";
+    case "canceled":
+      return "Annulé";
+    default:
+      return status;
   }
-}
+};
 
 onMounted(async () => {
   try {
-    const res = await $api.get('/projects/creators')
-    projects.value = res.data.projects
+    const res = await $api.get("/projects/creators");
+    projects.value = res.data.projects;
   } catch (err) {
-    error.value = err.response?.data?.message || 'Erreur serveur'
+    error.value = err.response?.data?.message || "Erreur serveur";
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 </script>
