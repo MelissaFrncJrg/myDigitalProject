@@ -2,6 +2,12 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const qrcode = require("qrcode");
+const {
+  requestPasswordReset,
+  resetPassword,
+} = require("../controllers/passwordController");
+const { registerUser } = require("../services/authService");
+const { resetPasswordLimiter } = require("../middlewares/resetPasswordLimit");
 const { body } = require("express-validator");
 const { loginLimiter } = require("../middlewares/rateLimiters");
 const { PrismaClient } = require("@prisma/client");
@@ -109,5 +115,13 @@ router.post(
     })(req, res, next);
   }
 );
+
+router.post(
+  "/request-password-reset",
+  resetPasswordLimiter,
+  requestPasswordReset
+);
+
+router.post("/reset-password", resetPassword);
 
 module.exports = router;

@@ -5,6 +5,7 @@ const {
   updateProfile,
   switchToCreator,
   deleteAccount,
+  updatePassword,
 } = require("../controllers/profileController");
 const { authenticateToken } = require("../middlewares/jwtMiddleware");
 
@@ -15,5 +16,7 @@ router.patch("/", authenticateToken, updateProfile);
 router.delete("/delete-account", authenticateToken, deleteAccount);
 
 router.patch("/switch-to-creator", authenticateToken, switchToCreator);
+
+router.patch("/update-password", ensureAuthenticated, updatePassword);
 
 module.exports = router;
